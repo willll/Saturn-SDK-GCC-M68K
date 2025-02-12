@@ -1,21 +1,27 @@
 #!/bin/bash
 
-#export SKIP_DOWNLOAD
-
-export INSTALLDIR=$PWD/toolchains/m68k
+# Directories
+export INSTALLDIR=${INSTALLDIR:=$PWD/toolchain/toolchain}
 export SYSROOTDIR=$INSTALLDIR/sysroot
-export ROOTDIR=$PWD/toolchains
-export DOWNLOADDIR=$PWD/download
-export RELSRCDIR=./toolchains/m68k/sources
-export SRCDIR=$PWD/toolchains/m68k/sources
-export BUILDDIR=$PWD/toolchains/m68k/build
+export ROOTDIR=${ROOTDIR:=$PWD}
+export DOWNLOADDIR=$PWD/toolchain/download
+export RELSRCDIR=./toolchain/source
+export SRCDIR=$PWD/toolchain/source
+export BUILDDIR=$PWD/toolchain/build
 
+# Detect host system and set build/host machine
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    export BUILDMACH=i686-pc-linux-gnu
-    export HOSTMACH=i686-pc-linux-gnu
+    export BUILDMACH=x86_64-pc-linux-gnu
+    export HOSTMACH=x86_64-pc-linux-gnu
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    export BUILDMACH=i686-pc-linux-gnu
-    export HOSTMACH=i686-pc-linux-gnu
+    # Adjust for M4 Mac (ARM64 architecture)
+    if [[ "$(uname -m)" == "arm64" ]]; then
+        export BUILDMACH=aarch64-apple-darwin
+        export HOSTMACH=aarch64-apple-darwin
+    else
+        export BUILDMACH=x86_64-apple-darwin
+        export HOSTMACH=x86_64-apple-darwin
+    fi
 elif [[ "$OSTYPE" == "cygwin" ]]; then
     export BUILDMACH=i686-pc-linux-gnu
     export HOSTMACH=i686-pc-linux-gnu
@@ -23,21 +29,19 @@ elif [[ "$OSTYPE" == "msys" ]]; then
     export BUILDMACH=mingw32
     export HOSTMACH=mingw32
 else
-    export BUILDMACH=i686-pc-linux-gnu
-    export HOSTMACH=i686-pc-linux-gnu
+    export BUILDMACH=x86_64-pc-linux-gnu
+    export HOSTMACH=x86_64-pc-linux-gnu
 fi
 
-export PROGRAM_PREFIX=m68k-elf
-export TARGETMACH=m68k-elf
-export OBJFORMAT=ELF
+# Toolchain-specific settings
+export GCC_BOOTSTRAP="--disable-bootstrap"
+export PROGRAM_PREFIX=${PROGRAM_PREFIX:=m68k-}
+export TARGETMACH=${TARGETMACH:=m68k-elf}
+export OBJFORMAT=${OBJFORMAT:=ELF}
 
-export NCPU=1
+export GCC_FINAL_FLAGS="--with-sysroot=$SYSROOTDIR"
+export BINUTILS_CFLAGS="-s"
+export GCC_BOOTSTRAP_FLAGS=""
 
-#export BINUTILS_CFLAGS="-s"
-#export GCC_BOOTSTRAP_FLAGS="--with-cpu=m2"
-#export GCC_FINAL_FLAGS="--with-cpu=m2 --with-sysroot=$SYSROOTDIR"
-#export QTIFWDIR=./installer
-
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
-source $SCRIPT_DIR/versions.sh
+# Source versions
+source versions.sh

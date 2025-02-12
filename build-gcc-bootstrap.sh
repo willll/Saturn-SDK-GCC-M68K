@@ -7,14 +7,23 @@ mkdir -p $BUILDDIR/gcc-bootstrap
 cd $BUILDDIR/gcc-bootstrap
 
 export PATH=$INSTALLDIR/bin:$PATH
+
+export CFLAGS=""
+export CXXFLAGS=""
+export LDFLAGS=""
+
+if [[ "$ENABLE_STATIC_BUILD" != "0" ]]; then
+    CFLAGS+=" -static"
+    CXXFLAGS+=" -static"
+    LDFLAGS+=" -static"
+fi
+
 export CDIR=$PWD
 
-which -- $TARGET-as || echo $TARGET-as is not in the PATH
-
-../../sources/gcc-${GCCVER}/configure \
+../../source/gcc-${GCCVER}${GCCREV}/configure \
 	--build=$BUILDMACH --host=$HOSTMACH --target=$TARGETMACH \
 	--prefix=$INSTALLDIR  \
-	--enable-languages=c  \
+	--enable-languages=c,c++  \
 	--with-gnu-ld --with-gnu-as --with-gcc \
 	--disable-shared \
 	--disable-libgcj \
@@ -23,12 +32,10 @@ which -- $TARGET-as || echo $TARGET-as is not in the PATH
 	--disable-libssp -disable-nls --disable-multilib \
 	--with-newlib
 
-make all-gcc -j${NCPU}
-make install-gcc -j${NCPU}
+make all-gcc $MAKEFLAGS
+make install-gcc $MAKEFLAGS
+
+make all-target-libgcc $MAKEFLAGS
+make install-target-libgcc $MAKEFLAGS
 
 cd ${CDIR}
-
-
-#	--with-gmp=$INSTALLDIR \
-#	--with-mpfr=$INSTALLDIR \
-#	--with-mpc=$INSTALLDIR \

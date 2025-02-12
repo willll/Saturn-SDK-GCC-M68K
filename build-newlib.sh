@@ -7,7 +7,6 @@ mkdir -p $BUILDDIR/newlib
 cd $BUILDDIR/newlib
 
 export PATH=$INSTALLDIR/bin:$PATH
-
 export CROSS=${PROGRAM_PREFIX}
 export CC_FOR_TARGET=${CROSS}gcc
 export LD_FOR_TARGET=${CROSS}ld
@@ -19,7 +18,7 @@ export newlib_cflags="${newlib_cflags} -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZ
 
 $SRCDIR/newlib-${NEWLIBVER}/configure --prefix=$INSTALLDIR \
 	--target=$TARGETMACH --build=$BUILDMACH --host=$HOSTMACH \
-  --with-cpu=m68000 --disable-werror --disable-multilib \
+  	--with-cpu=m68000 --disable-werror --disable-multilib \
 	--disable-libquadmath --disable-libquadmath-support \
 	--disable-libstdcxx --disable-newlib-fvwrite-in-streamio \
 	--disable-newlib-fseek-optimization --disable-newlib-wide-orient \
@@ -27,5 +26,5 @@ $SRCDIR/newlib-${NEWLIBVER}/configure --prefix=$INSTALLDIR \
 	--disable-newlib-multithread --disable-newlib-io-float \
 	--disable-newlib-supplied-syscalls
 
-make all -j${NCPU}
-make install -j${NCPU}
+make all $MAKEFLAGS
+make install $MAKEFLAGS

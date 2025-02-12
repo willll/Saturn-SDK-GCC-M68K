@@ -7,18 +7,30 @@ mkdir $BUILDDIR/gcc-final
 cd $BUILDDIR/gcc-final
 
 export PATH=$INSTALLDIR/bin:$PATH
+
+export CFLAGS=""
+export CXXFLAGS=""
+export LDFLAGS=""
+
+if [[ "$ENABLE_STATIC_BUILD" != "0" ]]; then
+    CFLAGS+=" -static"
+    CXXFLAGS+=" -static"
+    LDFLAGS+=" -static"
+fi
+
 export CDIR=$PWD
 
-../../sources/gcc-${GCCVER}/configure \
+../../source/gcc-${GCCVER}${GCCREV}/configure \
 	--build=$BUILDMACH --target=$TARGETMACH --host=$HOSTMACH \
-	--prefix="$INSTALLDIR" --enable-languages=c  --disable-bootstrap \
-	--with-gnu-as --with-gnu-ld --disable-shared --disable-threads \
+	--prefix=$INSTALLDIR --enable-languages=c,c++ --disable-bootstrap \
+	--with-gnu-as --with-gnu-ld --with-gcc  \
+    --with-stabs --disable-shared --disable-threads \
 	--disable-multilib --disable-tls --disable-libssp --disable-lto \
-  --with-newlib \
-	--with-cpu=m68000 --disable-werror --disable-multilib \
-	--program-prefix=${PROGRAM_PREFIX}
+	--with-newlib --disable-multilib \
+	--with-cpu=m68000 --disable-werror \
+	--program-prefix=${PROGRAM_PREFIX} ${GCC_FINAL_FLAGS}
 
-make -j${NCPU}
-make install -j${NCPU}
+make $MAKEFLAGS
+make install $MAKEFLAGS
 
 cd ${CDIR}

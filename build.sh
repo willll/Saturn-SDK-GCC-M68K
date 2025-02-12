@@ -51,7 +51,7 @@ function print_environment_variable_usage
 
         if [ "${PRINT_USAGE}" == "ALL" ] || [ "${PRINT_USAGE}" == "PROGRAM_PREFIX" ]; then
                 printf "PROGRAM_PREFIX - The prefix used before the tool's name, such as:\n"
-                printf "                 saturn-sh2-gcc, where gcc is the program, with saturn-sh2-\n"
+                printf "                 saturn-68k-gcc, where gcc is the program, with saturn-68k-\n"
                 printf "                 being the prefix\n"
         fi
 }
@@ -135,12 +135,10 @@ if [ -z $NCPU ]; then
 	fi
 fi
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
 [ -d $INSTALLDIR ] && rm -rf $INSTALLDIR
 
-if [ -z $SKIP_DOWNLOAD]; then
-	$SCRIPT_DIR/download.sh
+if [[ "$ENABLE_DOWNLOAD_CACHE" != "1" ]]; then
+	./download.sh
 
 	if [ $? -ne 0 ]; then
 		echo "Failed to retrieve the files necessary for building GCC"
@@ -148,38 +146,46 @@ if [ -z $SKIP_DOWNLOAD]; then
 	fi
 fi
 
-$SCRIPT_DIR/extract-source.sh
+./extract-source.sh
 
 if [ $? -ne 0 ]; then
 	echo "Failed to extract the source files necessary for building GCC"
 	exit 1
 fi
 
-$SCRIPT_DIR/build-binutils.sh
+./build-binutils.sh
 
 if [ $? -ne 0 ]; then
 	echo "Failed building binutils"
 	exit 1
 fi
 
-$SCRIPT_DIR/build-gcc-bootstrap.sh
+./build-gcc-bootstrap.sh
 
 if [ $? -ne 0 ]; then
 	echo "Failed building the bootstrap phase of GCC"
 	exit 1
 fi
 
-$SCRIPT_DIR/build-newlib.sh
+./build-newlib.sh
 
 if [ $? -ne 0 ]; then
 	echo "Failed building newlib"
 	exit 1
 fi
 
-
-$SCRIPT_DIR/build-gcc-final.sh
+./build-gcc-final.sh
 
 if [ $? -ne 0 ]; then
-	echo "Failed building the final version of GCC"
+	echo "Failed building the final phase of GCC"
 	exit 1
+fi
+
+if [ -n "${GDBVER}${GDBREV}" ]; then
+  ./build-gdb.sh
+
+  if [ $? -ne 0 ]; then
+  	echo "Failed building GDB"
+  	exit 1
+  fi
 fi
