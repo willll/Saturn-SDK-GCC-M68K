@@ -30,7 +30,7 @@ export CDIR=$PWD
 	--without-headers \
 	--program-prefix=${PROGRAM_PREFIX} \
 	--disable-libssp -disable-nls --disable-multilib \
-	--with-newlib
+	--disable-newlib
 
 make all-gcc $MAKEFLAGS
 make install-gcc $MAKEFLAGS

@@ -14,9 +14,9 @@ export AS_FOR_TARGET=${CROSS}as
 export AR_FOR_TARGET=${CROSS}ar
 export RANLIB_FOR_TARGET=${CROSS}ranlib
 
-export newlib_cflags="${newlib_cflags} -DPREFER_SIZE_OVER_SPEED -D__OPTIMIZE_SIZE__"
+export CFLAGS_FOR_TARGET="-Wno-implicit-int -Wno-error=implicit-function-declaration"
 
-$SRCDIR/newlib-${NEWLIBVER}/configure --prefix=$INSTALLDIR \
+$SRCDIR/newlib-${NEWLIBVER}${NEWLIBREV}/configure --prefix=$INSTALLDIR \
 	--target=$TARGETMACH --build=$BUILDMACH --host=$HOSTMACH \
   	--with-cpu=m68000 --disable-werror --disable-multilib \
 	--disable-libquadmath --disable-libquadmath-support \

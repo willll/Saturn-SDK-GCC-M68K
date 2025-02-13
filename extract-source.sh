@@ -35,17 +35,19 @@ if [ ! -d gcc-${GCCVER}${GCCREV} ]; then
 	fi
 fi
 
-if [ ! -d newlib-${NEWLIBVER}${NEWLIBREV} ]; then
-	if [[ "$ENABLE_DOWNLOAD_CACHE" != "1" ]]; then
-		tar xvzpf $DOWNLOADDIR/newlib-${NEWLIBVER}${NEWLIBREV}.tar.gz
-	else
-		tar xvzpf $ROOTDIR/gnu/newlib/newlib-${NEWLIBVER}${NEWLIBREV}.tar.gz
-	fi
+if [ -n "${NEWLIBVER}${NEWLIBREV}" ]; then
+    if [ ! -d newlib-${NEWLIBVER}${NEWLIBREV} ]; then
+    	if [[ "$ENABLE_DOWNLOAD_CACHE" != "1" ]]; then
+    		tar xvzpf $DOWNLOADDIR/newlib-${NEWLIBVER}${NEWLIBREV}.tar.gz
+    	else
+    		tar xvzpf $ROOTDIR/gnu/newlib/newlib-${NEWLIBVER}${NEWLIBREV}.tar.gz
+    	fi
 
-	if [ $? -ne 0 ]; then
-		rm -rf newlib-${NEWLIBVER}${NEWLIBREV}
-		exit 1
-	fi
+    	if [ $? -ne 0 ]; then
+    		rm -rf newlib-${NEWLIBVER}${NEWLIBREV}
+    		exit 1
+    	fi
+    fi
 fi
 
 if [ -n "${MPCVER}${MPCREV}" ]; then

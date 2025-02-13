@@ -42,13 +42,15 @@ if [ ! -f "gcc-${GCCVER}${GCCREV}.tar.xz" ]; then
     exit 1
 fi
 
-$FETCH https://sourceware.org/pub/newlib/newlib-${NEWLIBVER}${NEWLIBREV}.tar.gz
-if [ ! -f "newlib-${NEWLIBVER}${NEWLIBREV}.tar.gz" ]; then
-    echo "newlib-${NEWLIBVER}${NEWLIBREV}.tar.gz not downloaded."
-    exit 1
+if [ -n "${NEWLIBVER}${NEWLIBREV}" ]; then
+    $FETCH https://sourceware.org/pub/newlib/newlib-${NEWLIBVER}${NEWLIBREV}.tar.gz
+    if [ ! -f "newlib-${NEWLIBVER}${NEWLIBREV}.tar.gz" ]; then
+        echo "newlib-${NEWLIBVER}${NEWLIBREV}.tar.gz not downloaded."
+        exit 1
+    fi
 fi
 
-if [ -n "${GDBVER}" ]; then
+if [ -n "${GDBVER}${GDBREV}" ]; then
 	$FETCH https://ftp.gnu.org/gnu/gdb/gdb-${GDBVER}${GDBREV}.tar.gz.sig
 	if [ ! -f "gdb-${GDBVER}${GDBREV}.tar.gz.sig" ]; then
 				echo "gdb-${GDBVER}${GDBREV}.tar.gz.sig not downloaded."
@@ -61,7 +63,7 @@ if [ -n "${GDBVER}" ]; then
 	fi
 fi
 
-if [ -n "${MPCVER}" ]; then
+if [ -n "${MPCVER}${MPCREV}" ]; then
 	$FETCH https://ftp.gnu.org/gnu/mpc/mpc-${MPCVER}${MPCREV}.tar.gz.sig
 	if [ ! -f "mpc-${MPCVER}${MPCREV}.tar.gz.sig" ]; then
     		echo "mpc-${MPCVER}${MPCREV}.tar.gz.sig not downloaded."
@@ -73,7 +75,8 @@ if [ -n "${MPCVER}" ]; then
 		exit 1
 	fi
 fi
-if [ -n "${MPFRVER}" ]; then
+
+if [ -n "${MPFRVER}${MPFRREV}" ]; then
 	$FETCH https://ftp.gnu.org/gnu/mpfr/mpfr-${MPFRVER}${MPFRREV}.tar.xz.sig
 	if [ ! -f "mpfr-${MPFRVER}${MPFRREV}.tar.xz.sig" ]; then
     		echo "mpfr-${MPFRVER}${MPFRREV}.tar.xz.sig not downloaded."
@@ -85,7 +88,7 @@ if [ -n "${MPFRVER}" ]; then
 		exit 1
 	fi
 fi
-if [ -n "${GMPVER}" ]; then
+if [ -n "${GMPVER}${GMPREV}" ]; then
 	$FETCH https://ftp.gnu.org/gnu/gmp/gmp-${GMPVER}${GMPREV}.tar.xz.sig
 	if [ ! -f "gmp-${GMPVER}${GMPREV}.tar.xz.sig" ]; then
     		echo "gmp-${GMPVER}${GMPREV}.tar.xz.sig not downloaded."

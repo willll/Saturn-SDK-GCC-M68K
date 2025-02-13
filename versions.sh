@@ -1,17 +1,22 @@
 #!/bin/bash
 
-export BINUTILSVER=2.36.1
+export BINUTILSVER=2.43
 export BINUTILSREV=
-export GCCVER=11.5.0
+export GCCVER=14.2.0
 export GCCREV=
-export NEWLIBVER=4.1.0
+export NEWLIBVER=
 export NEWLIBREV=
-export MPCVER=1.2.1
+#export NEWLIBVER=4.4.0
+#export NEWLIBREV=.20231231
+export MPCVER=1.3.1
 export MPCREV=
-export MPFRVER=4.1.0
+export MPFRVER=4.2.1
 export MPFRREV=
-export GMPVER=6.2.1
+export GMPVER=6.3.0
 export GMPREV=
+export GDBVER=
+#export GDBVER=14.2
+export GDBREV=
 
 export ENABLE_DOWNLOAD_CACHE=${ENABLE_DOWNLOAD_CACHE:=1}
 export ENABLE_STATIC_BUILD=${ENABLE_STATIC_BUILD:=0}

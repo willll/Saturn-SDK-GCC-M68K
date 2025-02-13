@@ -167,11 +167,13 @@ if [ $? -ne 0 ]; then
 	exit 1
 fi
 
-./build-newlib.sh
+if [ -n "${NEWLIBVER}${NEWLIBREV}" ]; then
+    ./build-newlib.sh
 
-if [ $? -ne 0 ]; then
-	echo "Failed building newlib"
-	exit 1
+    if [ $? -ne 0 ]; then
+    	echo "Failed building newlib"
+    	exit 1
+    fi
 fi
 
 ./build-gcc-final.sh

@@ -39,7 +39,8 @@ export PROGRAM_PREFIX=${PROGRAM_PREFIX:=m68k-}
 export TARGETMACH=${TARGETMACH:=m68k-elf}
 export OBJFORMAT=${OBJFORMAT:=ELF}
 
-export GCC_FINAL_FLAGS="--with-sysroot=$SYSROOTDIR"
+#export GCC_FINAL_FLAGS="--with-sysroot=$SYSROOTDIR"
+export GCC_FINAL_FLAGS=""
 export BINUTILS_CFLAGS="-s"
 export GCC_BOOTSTRAP_FLAGS=""
 
