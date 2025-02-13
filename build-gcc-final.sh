@@ -26,7 +26,7 @@ export CDIR=$PWD
 	--with-gnu-as --with-gnu-ld --with-gcc  \
     --with-stabs --disable-shared --disable-threads \
 	--disable-multilib --disable-tls --disable-libssp --disable-lto \
-	--disable-newlib --disable-multilib --disable-libstdcxx-v3 \
+	--disable-newlib --disable-multilib --disable-libstdcxx \
 	--with-cpu=m68000 --disable-werror \
 	--program-prefix=${PROGRAM_PREFIX} ${GCC_FINAL_FLAGS}
 
