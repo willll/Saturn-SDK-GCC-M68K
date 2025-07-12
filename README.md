@@ -83,6 +83,6 @@ once the installation is finished, start Minty and :
 * reload .bashrc > source ~/.bashrc
 * Install git > pacman -S git
 * Install wget > pacman -S wget
-* Install make and co > pacman -S make automake texinfo bison autoconf
+* Install make and co > pacman -S make automake texinfo bison autoconf mingw-w64-x86_64-libiconv
 * clone this repository
 * > ./var-elf.sh ./build-elf.sh
